@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <h1>Add a movie to <%= @list.name %></h1>
+
+  <%= simple_form_for [@list, @bookmark] do |f| %>
+    <%= f.association :movie, collection: Movie.order(:title), prompt: "Choose a movie" %>
+    <%= f.input :comment %>
+    <%= f.button :submit, "Add bookmark", class: "btn btn-success" %>
+  <% end %>
+
+  <div class="mt-3">
+    <%= link_to "Back", list_path(@list) %>
+  </div>
+</div>

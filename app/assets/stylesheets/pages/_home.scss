@@ -1,1 +1,451 @@
-// Specific CSS for your home-page
+/* app/assets/stylesheets/pages/_home.scss */
+
+/* ---------- THEME: CINEMATIC NOIR ---------- */
+:root {
+  --cin-bg: #07080c;
+  --cin-bg-2: #0b0d14;
+  --cin-card: rgba(16, 18, 28, 0.72);
+  --cin-border: rgba(255, 255, 255, 0.10);
+  --cin-text: rgba(255, 255, 255, 0.92);
+  --cin-muted: rgba(255, 255, 255, 0.62);
+
+  --cin-red: #ff2d2d;
+  --cin-gold: #ffcc66;
+  --cin-teal: #2ef2d1;
+  --cin-purple: #7a5cff;
+
+  --cin-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+  --cin-shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.45);
+
+  --cin-radius: 22px;
+  --cin-radius-lg: 28px;
+}
+
+html, body {
+  background: radial-gradient(1200px 600px at 20% 0%, rgba(122, 92, 255, 0.16), transparent 60%),
+              radial-gradient(1000px 700px at 85% 10%, rgba(46, 242, 209, 0.10), transparent 60%),
+              radial-gradient(1200px 800px at 50% 110%, rgba(255, 45, 45, 0.10), transparent 55%),
+              linear-gradient(180deg, var(--cin-bg), var(--cin-bg-2));
+  color: var(--cin-text);
+}
+
+/* Smooth font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- SUBTLE FILM GRAIN + VIGNETTE OVERLAY ---------- */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999; /* overlay on top */
+}
+
+body::before {
+  /* grain */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.20'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.14;
+}
+
+body::after {
+  /* vignette */
+  background: radial-gradient(circle at 50% 30%, transparent 0%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0.55) 100%);
+  opacity: 0.80;
+}
+
+/* ---------- CONTAINERS ---------- */
+.container {
+  position: relative;
+  z-index: 1; /* under overlays */
+}
+
+/* ---------- NAVBAR (cinematic glass) ---------- */
+.navbar-lewagon {
+  background: rgba(10, 12, 18, 0.55) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.navbar-lewagon .navbar-brand {
+  color: var(--cin-text) !important;
+  letter-spacing: 0.2px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.navbar-lewagon .nav-link {
+  color: rgba(255,255,255,0.78) !important;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  position: relative;
+  transition: transform 160ms ease, color 160ms ease;
+}
+
+.navbar-lewagon .nav-link:hover {
+  color: var(--cin-text) !important;
+  transform: translateY(-1px);
+}
+
+.navbar-lewagon .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--cin-red), var(--cin-gold));
+  transition: width 180ms ease;
+  opacity: 0.9;
+}
+
+.navbar-lewagon .nav-link:hover::after {
+  width: 100%;
+}
+
+/* ---------- BUTTONS (ticket vibe) ---------- */
+.btn {
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.btn-success {
+  background: linear-gradient(90deg, rgba(46,242,209,0.95), rgba(122,92,255,0.90)) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  box-shadow: 0 16px 36px rgba(46, 242, 209, 0.16), 0 12px 30px rgba(122, 92, 255, 0.14);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-success::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.18) 40%, transparent 70%);
+  transition: transform 420ms ease;
+}
+
+.btn-success:hover::before {
+  transform: translateX(120%);
+}
+
+.btn-success:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+/* ---------- BANNER (cinema screen) ---------- */
+.banner {
+  min-height: 54vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.06), var(--cin-shadow);
+}
+
+/* Screen glow */
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(800px 380px at 50% 40%, rgba(255, 204, 102, 0.14), transparent 60%),
+              radial-gradient(900px 420px at 60% 30%, rgba(255, 45, 45, 0.12), transparent 62%),
+              radial-gradient(900px 520px at 40% 40%, rgba(46, 242, 209, 0.10), transparent 62%);
+  opacity: 0.9;
+}
+
+.banner .container {
+  position: relative;
+  z-index: 2;
+}
+
+.banner h1 {
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  text-shadow: 0 14px 40px rgba(0,0,0,0.70);
+}
+
+.banner p {
+  margin-top: 12px;
+  color: rgba(255,255,255,0.78);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 12px 24px rgba(0,0,0,0.65);
+}
+
+/* Faux “film perforations” */
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.0) 0px,
+      rgba(0,0,0,0.0) 16px,
+      rgba(0,0,0,0.18) 17px
+    );
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+}
+
+/* ---------- SECTION TITLES ---------- */
+h2, h3 {
+  font-weight: 900;
+  letter-spacing: 0.6px;
+}
+
+h2 {
+  text-transform: uppercase;
+}
+
+/* ---------- LIST CARDS (poster wall) ---------- */
+.card-category {
+  height: 220px;
+  border-radius: var(--cin-radius-lg);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: var(--cin-shadow-soft);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 18px 18px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+/* spotlight sheen */
+.card-category::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(closest-side at 35% 30%, rgba(255,255,255,0.18), transparent 60%);
+  transform: rotate(8deg);
+  opacity: 0.65;
+}
+
+.card-category::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.80) 100%);
+}
+
+.card-category:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(255, 204, 102, 0.28);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.68);
+}
+
+.card-category {
+  color: rgba(255,255,255,0.96) !important;
+}
+.card-category * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- MOVIE CARDS (cinematic glass) ---------- */
+.card-product {
+  border-radius: var(--cin-radius-lg);
+  border: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(16,18,28,0.72), rgba(10,12,18,0.78));
+  box-shadow: var(--cin-shadow-soft);
+  overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.card-product:hover {
+  transform: translateY(-3px);
+  border-color: rgba(46, 242, 209, 0.25);
+  box-shadow: 0 26px 80px rgba(0,0,0,0.70);
+}
+
+.card-product img {
+  width: 160px;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.05);
+}
+
+.card-product-infos h2 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.card-product-infos p {
+  color: rgba(255,255,255,0.70);
+}
+
+.text-danger {
+  text-shadow: 0 10px 24px rgba(255, 45, 45, 0.12);
+}
+
+/* Quote line */
+.fa-quote-left {
+  color: rgba(255, 204, 102, 0.85);
+}
+
+/* ---------- FORMS (studio look) ---------- */
+.card {
+  background: rgba(16, 18, 28, 0.66);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--cin-radius-lg);
+  box-shadow: var(--cin-shadow-soft);
+}
+
+.form-control, .form-select {
+  background: rgba(10, 12, 18, 0.65) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  color: rgba(255,255,255,0.90) !important;
+  border-radius: 14px !important;
+}
+
+.form-control::placeholder {
+  color: rgba(255,255,255,0.45);
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(122, 92, 255, 0.18) !important;
+  border-color: rgba(122, 92, 255, 0.40) !important;
+}
+
+/* ---------- REVIEWS / STARS ---------- */
+.fa-star {
+  filter: drop-shadow(0 10px 18px rgba(255, 204, 102, 0.12));
+}
+
+/* ---------- HR ---------- */
+hr {
+  border-color: rgba(255,255,255,0.10);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 576px) {
+  .banner { min-height: 44vh; }
+  .card-category { height: 190px; }
+  .card-product img { width: 120px; }
+}
+
+/* ---------- OPTIONAL: subtle entrance animation ---------- */
+@keyframes cinFadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.banner .container,
+.container h2,
+.card-category,
+.card-product,
+.card {
+  animation: cinFadeUp 420ms ease both;
+}
+
+.banner-home {
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; // effet parallax léger (tu peux enlever si tu veux)
+}
+
+.banner-home::before {
+  /* petit glow projecteur en plus */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(800px 380px at 50% 40%, rgba(255, 204, 102, 0.12), transparent 60%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* petite animation "zoom cinéma" */
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.04); }
+}
+
+.banner-home {
+  animation: slowZoom 18s ease-in-out infinite alternate;
+}
+
+/* --- Banner SHOW (list page) --- */
+.banner-show {
+  min-height: 48vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Effet projecteur */
+.banner-show::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 420px at 50% 35%, rgba(255, 204, 102, 0.14), transparent 60%),
+    radial-gradient(900px 520px at 40% 45%, rgba(46, 242, 209, 0.10), transparent 62%),
+    radial-gradient(900px 520px at 60% 45%, rgba(255, 45, 45, 0.10), transparent 62%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.banner-title {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 0 16px 50px rgba(0,0,0,0.75);
+}
+
+.banner-subtitle {
+  color: rgba(255,255,255,0.78);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-shadow: 0 14px 28px rgba(0,0,0,0.70);
+}
+
+/* Badge "festival" */
+.banner-badge {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  background: rgba(10, 12, 18, 0.55);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+}
+
+/* Petit "shine" sur la badge */
+.banner-badge::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-top: 8px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255,45,45,0.85), rgba(255,204,102,0.85));
+  opacity: 0.9;
+}

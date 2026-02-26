@@ -1,0 +1,117 @@
+<%# app/views/lists/show.html.erb %>
+
+<% classic_banner = "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=2200&q=80" %>
+<% default_banner = "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2200&q=80" %>
+
+<% banner_url =
+  if @list.name.to_s.downcase.include?("classic")
+    classic_banner
+  elsif @list.respond_to?(:photo_url) && @list.photo_url.present?
+    @list.photo_url
+  else
+    default_banner
+  end
+%>
+
+<div class="banner banner-show" style="background-image: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.72)), url('<%= banner_url %>');">
+  <div class="container text-center">
+    <% if @list.name.to_s.downcase.include?("classic") %>
+      <div class="banner-badge mb-3">Classic Collection</div>
+      <h1 class="banner-title"><%= @list.name %></h1>
+      <p class="banner-subtitle">Timeless cinema, curated like a festival selection.</p>
+    <% else %>
+      <h1 class="banner-title"><%= @list.name %></h1>
+    <% end %>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <%# ---------------- MOVIES (BOOKMARKS) ---------------- %>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Movies</h2>
+    <%= link_to "Back", lists_path, class: "btn btn-outline-light" %>
+  </div>
+
+  <div class="row">
+    <% @list.bookmarks.each do |bookmark| %>
+      <div class="col-12 col-md-6 mb-4">
+        <div class="card-product">
+          <img src="<%= bookmark.movie.poster_url %>" alt="<%= bookmark.movie.title %>">
+
+          <div class="card-product-infos">
+            <div class="d-flex justify-content-between align-items-center">
+              <h2 class="mb-0">
+                <%= bookmark.movie.title %>
+                <span class="text-muted"><%= bookmark.movie.rating %></span>
+                <span>⭐</span>
+              </h2>
+
+              <%= link_to "delete",
+                          bookmark_path(bookmark),
+                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                          class: "text-danger text-decoration-none" %>
+            </div>
+
+            <p class="mt-2"><%= bookmark.movie.overview %></p>
+
+            <p class="mt-3">
+              <i class="fa fa-quote-left me-2"></i>
+              <%= bookmark.comment %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <hr class="my-5">
+
+  <%# ---------------- ADD BOOKMARK ---------------- %>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <h2>Add a movie</h2>
+
+      <%= simple_form_for [@list, @bookmark] do |f| %>
+        <%= f.association :movie, collection: Movie.order(:title), prompt: "Choose a movie" %>
+        <%= f.input :comment, placeholder: "e.g. Top rated on IMDB" %>
+        <%= f.button :submit, "Add bookmark", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+
+  <hr class="my-5">
+
+  <%# ---------------- REVIEWS (OPTIONNEL) ---------------- %>
+  <div class="row">
+    <div class="col-12 col-lg-7">
+      <h2>Reviews</h2>
+
+      <% if @list.respond_to?(:reviews) %>
+        <% @list.reviews.order(created_at: :desc).each do |review| %>
+          <div class="mb-3">
+            <div>
+              <% review.rating.to_i.times do %>
+                <i class="fa fa-star text-warning"></i>
+              <% end %>
+              <small class="text-muted ms-2"><%= time_ago_in_words(review.created_at) %> ago</small>
+            </div>
+            <p class="mb-1"><%= review.comment %></p>
+            <hr>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="col-12 col-lg-5">
+      <div class="card p-4 shadow-sm">
+        <h3 class="mb-3">Add your review</h3>
+
+        <%= simple_form_for [@list, @review] do |f| %>
+          <%= f.input :comment, input_html: { rows: 3 }, placeholder: "Add your review here..." %>
+          <%= f.input :rating, collection: 0..5, prompt: "Rate this list" %>
+          <%= f.button :submit, "Create Review", class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
