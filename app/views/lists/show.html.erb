@@ -6,6 +6,8 @@
 <% banner_url =
   if @list.name.to_s.downcase.include?("classic")
     classic_banner
+  elsif @list.photo.attached?
+    cl_image_path(@list.photo.key, height: 350, width: 900, crop: :fill)
   elsif @list.respond_to?(:photo_url) && @list.photo_url.present?
     @list.photo_url
   else
@@ -26,6 +28,11 @@
 </div>
 
 <div class="container mt-5">
+  <%# --- AJOUT : image uploadée (ActiveStorage + Cloudinary) en grand --- %>
+  <% if @list.photo.attached? %>
+    <%= cl_image_tag @list.photo.key, height: 350, width: 900, crop: :fill, class: "w-100 rounded mb-4" %>
+  <% end %>
+
   <%# ---------------- MOVIES (BOOKMARKS) ---------------- %>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="mb-0">Movies</h2>

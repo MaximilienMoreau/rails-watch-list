@@ -9,7 +9,10 @@
 #   end
 require "open-uri"
 require "json"
-
+file = URI.parse("https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1600&q=80").open
+list = List.new(name: "Action")
+list.photo.attach(io: file, filename: "action.jpg", content_type: "image/jpg")
+list.save!
 Bookmark.destroy_all
 Review.destroy_all
 List.destroy_all

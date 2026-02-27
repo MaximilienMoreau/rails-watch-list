@@ -17,8 +17,11 @@
     <% @lists.each do |list| %>
       <div class="col-12 col-md-6 mb-4">
         <%= link_to list_path(list), class: "text-decoration-none" do %>
+
           <% background_url =
-              if list.respond_to?(:photo_url) && list.photo_url.present?
+              if list.photo.attached?
+                cl_image_path(list.photo.key, height: 300, width: 800, crop: :fill)
+              elsif list.respond_to?(:photo_url) && list.photo_url.present?
                 list.photo_url
               else
                 "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1600&q=80"
@@ -30,6 +33,7 @@
                       url('<%= background_url %>');">
             <%= list.name %>
           </div>
+
         <% end %>
       </div>
     <% end %>
