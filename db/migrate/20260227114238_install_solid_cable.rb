@@ -128,6 +128,4 @@ class InstallSolidCable < ActiveRecord::Migration[8.1]
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   end
-
-  end
 end
